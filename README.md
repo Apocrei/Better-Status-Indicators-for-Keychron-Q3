@@ -7,8 +7,6 @@ This VIA keymap for the Keychron Q3 (ANSI, encoder version) adds **lock-aware li
 - Scroll Lock ON -> PrintScreen, ScrollLock, Pause turn red
 - Works even when RGB is toggled OFF: lock status still updates, so you never get "stuck red" keys
 
-> Insert indicator was intentionally removed (there is no standard OS "Insert lock" to track).
-
 ---
 
 ## Quick Start
