@@ -92,6 +92,9 @@ static void paint_keycode(uint16_t kc, uint8_t r, uint8_t g, uint8_t b) {
 
 static inline void red(uint16_t kc) { paint_keycode(kc, 255, 0, 0); }
 static inline void off(uint16_t kc) { paint_keycode(kc,   0, 0, 0); }
+// Blink helper (500 ms period)
+static inline bool blink_on(void) { return ((timer_read32() / 500) & 1) == 0; }
+// Remember previous lock states (for one-time clear on falling edge)
 static bool prev_caps_on = false;
 static bool prev_scroll_on = false;
 
@@ -119,21 +122,20 @@ bool led_update_user(led_t led_state) {
 bool rgb_matrix_indicators_user(void) {
     led_t leds = host_keyboard_led_state();
 
-    // CAPS: paint when ON; clear once when turning OFF
+    // CAPS: blink when ON; clear once when turning OFF
     if (leds.caps_lock) {
-        paint_caps_group(true);   // Caps + arrows red
+        paint_caps_group(blink_on());   // true = red, false = off
     } else if (prev_caps_on) {
-        paint_caps_group(false);  // one-time clear to remove stale red
+        paint_caps_group(false);        // one-time clear
     }
 
-    // SCROLL: paint when ON; clear once when turning OFF
+    // SCROLL: blink when ON; clear once when turning OFF
     if (leds.scroll_lock) {
-        paint_scroll_group(true); // Print/ScrLk/Pause red
+        paint_scroll_group(blink_on());
     } else if (prev_scroll_on) {
-        paint_scroll_group(false); // one-time clear
+        paint_scroll_group(false);
     }
 
-    // remember for next frame
     prev_caps_on   = leds.caps_lock;
     prev_scroll_on = leds.scroll_lock;
 
