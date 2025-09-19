@@ -2,6 +2,10 @@
 
 #pragma once
 
+#undef MANUFACTURER
+#undef PRODUCT
+#define MANUFACTURER "Keychron"
+#define PRODUCT "Keychron Q3 X Giles"
 
 // ----------------------
 // RGB Matrix settings
